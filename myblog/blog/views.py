@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .forms import CommentForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 """
@@ -11,13 +14,6 @@ class ArticleListView(ListView):
     model = Article
     ordering = ['-date_posted']
     paginate_by = 5
-
-
-"""
-The custom class DetailView is responsible for showing data of a article.
-"""
-class ArticleDetailView(DetailView):
-    model = Article
 
 
 """
@@ -78,5 +74,45 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request, pk=None):
     return render(request, 'blog/about.html', {'pk': pk})
+
+
+"""
+The custom class DetailView is responsible for showing data of a article.
+"""
+
+def article_detail(request, pk=None):
+    template_name = 'blog/article_detail.html'
+    # get article and user object according to request
+    article = get_object_or_404(Article, pk=pk)
+    user = request.user
+    # get all comments according to the article with active=True
+    comments = article.comments.filter()
+    # for new comment object
+    new_comment = None
+
+
+    # If user post new comment
+    if request.method == 'POST':
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            # Create Comment object but don't save to DB yet
+            new_comment = form.save(commit=False)
+            # Assign the current article to the comment
+            new_comment.article = article
+            new_comment.author = user
+            # Save the comment to the DB
+            new_comment.save()
+
+            return redirect(request.get_full_path())
+
+    else:
+        form = CommentForm()
+
+    return render(request, template_name, {'article': article,
+                                           'comments': comments,
+                                           'new_comment': new_comment,
+                                           'form': form})
+
+
 
 

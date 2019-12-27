@@ -1,9 +1,12 @@
 {% extends "blog/basic.html" %}
+{% load crispy_forms_tags %}
 
 {% block header %}
-<h1>{{ object.title }}</h1>
+
+{# article section #}
+<h1>{{ article.title }}</h1>
 <hr class="small">
-<span class="subheading">By {{ object.author }} on {{ object.date_posted|date:"F d, Y" }}</span>
+<span class="subheading">By {{ article.author }} on {{ article.date_posted|date:"F d, Y" }}</span>
 {% endblock header %}
 
 {% block content %}
@@ -15,6 +18,37 @@
 {% endif %}
 
 <div class="media-body">
-    <div class="article-content">{{ object.content }}</div>
+    <div class="article-content">{{ article.content }}</div>
 </div>
+
+
+{# comment display section #}
+<h2>{{ comments.count }} comments</h2>
+{% for comment in comments %}
+<div class="comments" style="padding: 10px;">
+    <span class=" text-muted font-weight-normal">
+        <a href="#">{{ comment.author.username }}</a>, {{ comment.created_on }}
+    </span>
+  {{ comment.body | linebreaks }}
+</div>
+{% endfor %}
+
+{# comment form section #}
+<div class="card-body">
+    {% if user.is_authenticated %}
+    <h3>Leave a comment</h3>
+    <div class="content-section">
+        <form method="POST" style="width: 60%; margin: 0 auto">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
 {% endblock content %}

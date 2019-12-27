@@ -11,7 +11,7 @@ View 'register' is responsible for:
 """
 def register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(data=request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
