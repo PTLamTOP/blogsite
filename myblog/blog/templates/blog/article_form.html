@@ -1,0 +1,22 @@
+{% extends 'blog/basic.html' %}
+{% load crispy_forms_tags %}
+
+{% block header %}
+<h1>New Article</h1>
+<hr class="small">
+<span class="subheading">Let's Do It!</span>
+{% endblock header %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST" style="width: 60%; margin: 0 auto">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

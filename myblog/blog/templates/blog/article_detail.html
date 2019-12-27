@@ -1,0 +1,20 @@
+{% extends "blog/basic.html" %}
+
+{% block header %}
+<h1>{{ object.title }}</h1>
+<hr class="small">
+<span class="subheading">By {{ object.author }} on {{ object.date_posted|date:"F d, Y" }}</span>
+{% endblock header %}
+
+{% block content %}
+{% if object.author == user %}
+    <div>
+        <a class="btn btn-secondary" href="{% url 'article-update' object.id %}">Update</a>
+        <a class="btn btn-danger" href="{% url 'article-delete' object.id %}">Delete</a>
+    </div>
+{% endif %}
+
+<div class="media-body">
+    <div class="article-content">{{ object.content }}</div>
+</div>
+{% endblock content %}

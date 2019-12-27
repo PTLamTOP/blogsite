@@ -1,0 +1,16 @@
+{% extends 'blog/basic.html' %}
+
+{% block header %}
+<h1>Goodbye Friend</h1>
+<hr class="small">
+<span class="subheading">Come Back Soon</span>
+{% endblock header %}
+
+{% block content %}
+    <h2>You have been logged out</h2>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{% url 'login' %}">Log In Again</a>
+        </small>
+    </div>
+{% endblock content %}

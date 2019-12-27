@@ -1,0 +1,22 @@
+{% extends 'blog/basic.html' %}
+
+{% block header %}
+<h1>{{ object.title }}</h1>
+<hr class="small">
+<span class="subheading">By {{ object.author }} on {{ object.date_posted|date:"F d, Y" }}</span>
+{% endblock header %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST" style="width: 90%; margin: 0 auto">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <h2>Are you sure you want to delete the article "{{ object.title }}"</h2>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">Yes, Delete</button>
+                <a class="btn btn-secondary" href="{% url 'article-detail' object.id %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

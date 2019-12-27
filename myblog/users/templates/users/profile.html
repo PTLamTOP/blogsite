@@ -1,0 +1,13 @@
+{% extends 'blog/basic.html' %}
+
+
+{% block header %}
+<h1> {{ user.username }}</h1>
+<hr class="small">
+<span class="subheading">{{ user.username}}'s Profile</span>
+{% endblock header %}
+
+
+{% block content %}
+    <p class="text-secondary">{{ user.email }}</p>
+{% endblock content %}
