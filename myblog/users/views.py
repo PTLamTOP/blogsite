@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 
 
 """
@@ -28,7 +30,9 @@ View 'profile' is reposible for user's page.
 Decorator @login_required checks if user is logged in before giving access to a profile.
 """
 @login_required
-def profile(request):
-    return render(request, 'users/profile.html')
+def profile(request, username=None):
+    profile = get_object_or_404(User, username=username)
+    return render(request, 'users/profile.html', {'profile': profile})
+
 
 

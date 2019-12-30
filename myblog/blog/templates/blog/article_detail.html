@@ -1,5 +1,7 @@
 {% extends "blog/basic.html" %}
 {% load crispy_forms_tags %}
+{% load multiply %}
+
 
 {% block header %}
 
@@ -10,10 +12,10 @@
 {% endblock header %}
 
 {% block content %}
-{% if object.author == user %}
+{% if article.author == user %}
     <div>
-        <a class="btn btn-secondary" href="{% url 'article-update' object.id %}">Update</a>
-        <a class="btn btn-danger" href="{% url 'article-delete' object.id %}">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'article-update' article.id %}">Update</a>
+        <a class="btn btn-danger" href="{% url 'article-delete' article.id %}">Delete</a>
     </div>
 {% endif %}
 
@@ -26,16 +28,16 @@
 <h2>{{ comments.count }} comments</h2>
 {% for comment in comments %}
 
-    <div class="comments" style="padding: 10px;">
+    <div class="comments" style="padding-left: {% multiply comment.level 100 %}px;">
         <span class=" text-muted font-weight-normal">
             <a href="#">{{ comment.author.username }}</a>, {{ comment.created_on }}
         </span>
       {{ comment.body|linebreaks }}
-    </div>
+        <h4>Reply</h4>
+
     {# REPLY TO COMMENT #}
         <div class="card-body">
             {% if user.is_authenticated %}
-            <h4>Reply</h4>
             <div class="content-section">
                 <form method="POST" style="width: 60%; margin: 0 auto">
                     {% csrf_token %}
@@ -49,34 +51,7 @@
             </div>
             {% endif %}
         </div>
-
-    {% for reply in comment.replies.all %}
-        <div class="comments" style="padding-left: 40px">
-            <small>
-                <span class=" text-muted font-weight-normal">
-                    <a href="#">{{ reply.author.username }}</a>, {{ reply.created_on }}
-                </span>
-                {{ reply.body|linebreaks }}
-            </small>
-        </div>
-    {% empty %}
-        <p>There is no reply...</p>
-    {% endfor %}
-
-        {% for subreply in reply.replies.all %}
-        <div class="comments" style="padding-left: 40px">
-            <small>
-                <span class=" text-muted font-weight-normal">
-                    <a href="#">{{ subreply.author.username }}</a>, {{ subreply.created_on }}
-                </span>
-                {{ subreply.body|linebreaks }}
-            </small>
-        </div>
-        {% empty %}
-            <p>There is no reply...</p>
-        {% endfor %}
-
-
+    </div>
 
 {% empty %}
         <p>There is no comment...</p>

@@ -22,7 +22,8 @@
                         {{ article.intro }}
                     </h3>
                 </a>
-                <p class="post-meta">Posted by <a href="#">{{ article.author }}</a> on {{ article.date_posted }}</p>
+                <p class="post-meta">Posted by <a href="{% url 'profile' article.author.username %}">
+                    {{ article.author }}</a> on {{ article.date_posted }}</p>
             </div>
         <hr>
         {% endfor %}

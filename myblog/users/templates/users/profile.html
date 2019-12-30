@@ -2,12 +2,15 @@
 
 
 {% block header %}
-<h1> {{ user.username }}</h1>
+<h1> {{ profile.username }}</h1>
 <hr class="small">
-<span class="subheading">{{ user.username}}'s Profile</span>
+<span class="subheading">{{ profile.username}}'s Profile</span>
 {% endblock header %}
 
 
 {% block content %}
-    <p class="text-secondary">{{ user.email }}</p>
+    <h3>Email:</h3>
+    <span class="text-secondary">{{ profile.email }}</span>
+    <h3>Articles:</h3>
+    <span class="text-secondary">{{ profile.articles.count }}</span>
 {% endblock content %}

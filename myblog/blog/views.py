@@ -1,10 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article, Comment
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import CommentForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 """
@@ -85,9 +84,14 @@ def article_detail(request, pk=None):
     article = get_object_or_404(Article, pk=pk)
     user = request.user
     # get all comments which: 1) are active, 2) is Parent (because field parent is null, no foreignkey to parent)
-    comments = article.comments.filter(active=True, parent__isnull=True)
+    comments = article.comments.filter(active=True)
     # for new comment object
     new_comment = None
+    # # comment's pagination
+    # paginator = Paginator(comments, 10)
+    # page = request.GET.get('page')
+
+
 
     # If HTTP method is POST (post new comment/reply)
     if request.method == 'POST':
@@ -98,6 +102,7 @@ def article_detail(request, pk=None):
                 parent_id = int(request.POST.get('parent_id'))
                 parent_obj = Comment.objects.get(id=parent_id)
                 reply_comment = form.save(commit=False)
+                reply_comment.level = parent_obj.level + 1
                 reply_comment.parent = parent_obj
                 reply_comment.save()
             except:
@@ -115,6 +120,9 @@ def article_detail(request, pk=None):
     return render(request, template_name, {'article': article,
                                            'comments': comments,
                                            'form': form})
+
+
+
 
 
 
