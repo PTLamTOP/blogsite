@@ -23,14 +23,10 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
     created_on = models.DateTimeField(default=timezone.now)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     # self = parent's comment object
-    # parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
-
-
-    class Meta:
-        ordering = ['created_on']
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
 
     def __str__(self):
         return f'Comment {self.body} by {self.author.username}'

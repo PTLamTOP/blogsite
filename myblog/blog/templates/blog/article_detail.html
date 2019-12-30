@@ -3,7 +3,7 @@
 
 {% block header %}
 
-{# article section #}
+{# ARTICLE #}
 <h1>{{ article.title }}</h1>
 <hr class="small">
 <span class="subheading">By {{ article.author }} on {{ article.date_posted|date:"F d, Y" }}</span>
@@ -18,20 +18,70 @@
 {% endif %}
 
 <div class="media-body">
-    <div class="article-content">{{ article.content }}</div>
+    <div class="article-content">{{ article.content | linebreaks }}</div>
 </div>
 
 
-{# comment display section #}
+{# COMMENT #}
 <h2>{{ comments.count }} comments</h2>
 {% for comment in comments %}
-<div class="comments" style="padding: 10px;">
-    <span class=" text-muted font-weight-normal">
-        <a href="#">{{ comment.author.username }}</a>, {{ comment.created_on }}
-    </span>
-  {{ comment.body | linebreaks }}
-</div>
+
+    <div class="comments" style="padding: 10px;">
+        <span class=" text-muted font-weight-normal">
+            <a href="#">{{ comment.author.username }}</a>, {{ comment.created_on }}
+        </span>
+      {{ comment.body|linebreaks }}
+    </div>
+    {# REPLY TO COMMENT #}
+        <div class="card-body">
+            {% if user.is_authenticated %}
+            <h4>Reply</h4>
+            <div class="content-section">
+                <form method="POST" style="width: 60%; margin: 0 auto">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    {# setting parent comment id which will be sent in request #}
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Reply</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+    {% for reply in comment.replies.all %}
+        <div class="comments" style="padding-left: 40px">
+            <small>
+                <span class=" text-muted font-weight-normal">
+                    <a href="#">{{ reply.author.username }}</a>, {{ reply.created_on }}
+                </span>
+                {{ reply.body|linebreaks }}
+            </small>
+        </div>
+    {% empty %}
+        <p>There is no reply...</p>
+    {% endfor %}
+
+        {% for subreply in reply.replies.all %}
+        <div class="comments" style="padding-left: 40px">
+            <small>
+                <span class=" text-muted font-weight-normal">
+                    <a href="#">{{ subreply.author.username }}</a>, {{ subreply.created_on }}
+                </span>
+                {{ subreply.body|linebreaks }}
+            </small>
+        </div>
+        {% empty %}
+            <p>There is no reply...</p>
+        {% endfor %}
+
+
+
+{% empty %}
+        <p>There is no comment...</p>
 {% endfor %}
+
 
 {# comment form section #}
 <div class="card-body">

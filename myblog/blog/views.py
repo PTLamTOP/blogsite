@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Article
+from .models import Article, Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import CommentForm
@@ -79,38 +79,41 @@ def about(request, pk=None):
 """
 The custom class DetailView is responsible for showing data of a article.
 """
-
 def article_detail(request, pk=None):
     template_name = 'blog/article_detail.html'
     # get article and user object according to request
     article = get_object_or_404(Article, pk=pk)
     user = request.user
-    # get all comments according to the article with active=True
-    comments = article.comments.filter()
+    # get all comments which: 1) are active, 2) is Parent (because field parent is null, no foreignkey to parent)
+    comments = article.comments.filter(active=True, parent__isnull=True)
     # for new comment object
     new_comment = None
 
-
-    # If user post new comment
+    # If HTTP method is POST (post new comment/reply)
     if request.method == 'POST':
         form = CommentForm(data=request.POST)
         if form.is_valid():
-            # Create Comment object but don't save to DB yet
-            new_comment = form.save(commit=False)
-            # Assign the current article to the comment
-            new_comment.article = article
-            new_comment.author = user
-            # Save the comment to the DB
-            new_comment.save()
+            # check if we have parent_id data from request. If yes - it is a reply, not- it is a new comment.
+            try:
+                parent_id = int(request.POST.get('parent_id'))
+                parent_obj = Comment.objects.get(id=parent_id)
+                reply_comment = form.save(commit=False)
+                reply_comment.parent = parent_obj
+                reply_comment.save()
+            except:
+                new_comment = form.save(commit=False)
+                new_comment.article = article
+                new_comment.author = user
+                new_comment.save()
 
             return redirect(request.get_full_path())
 
+    # if HTTP method is GET
     else:
         form = CommentForm()
 
     return render(request, template_name, {'article': article,
                                            'comments': comments,
-                                           'new_comment': new_comment,
                                            'form': form})
 
 
