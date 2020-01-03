@@ -5,10 +5,11 @@
 
 {% block header %}
 
-{# ARTICLE #}
+<!-- Article's data -->
 <h1>{{ article.title }}</h1>
 <hr class="small">
-<span class="subheading">By {{ article.author }} on {{ article.date_posted|date:"F d, Y" }}</span>
+<span class="subheading">By <a style="color: antiquewhite" href="{% url 'profile' article.author.username %}">
+    {{ article.author }}</a> on {{ article.date_posted|date:"F d, Y" }}</span>
 {% endblock header %}
 
 {% block content %}
@@ -24,18 +25,19 @@
 </div>
 
 
-{# COMMENT #}
-<h2>{{ comments.count }} comments</h2>
+<!-- Comments -->
+<h2>{{ comments_list.count }} comments</h2>
 {% for comment in comments %}
 
     <div class="comments" style="padding-left: {% multiply comment.level 100 %}px;">
         <span class=" text-muted font-weight-normal">
-            <a href="#">{{ comment.author.username }}</a>, {{ comment.created_on }}
+            <a href="{% url 'profile' article.author.username %}">{{ comment.author.username }}</a>,
+            {{ comment.created_on }}
         </span>
-      {{ comment.body|linebreaks }}
-        <h4>Reply</h4>
+        <span> {{ comment.body|linebreaks }} </span>
+        <label style="cursor: pointer" for="{{ comment.id }}">Reply</label>
 
-    {# REPLY TO COMMENT #}
+    <!-- Form of reply to comment -->
         <div class="card-body">
             {% if user.is_authenticated %}
             <div class="content-section">
@@ -45,7 +47,7 @@
                     {# setting parent comment id which will be sent in request #}
                     <input type="hidden" name="parent_id" value="{{ comment.id }}">
                     <div class="form-group">
-                        <button class="btn btn-primary" type="submit">Reply</button>
+                        <button id="{{ comment.id }}" class="btn btn-primary" type="submit">Reply</button>
                     </div>
                 </form>
             </div>
@@ -58,7 +60,31 @@
 {% endfor %}
 
 
-{# comment form section #}
+<!-- Pager -->
+<div style="padding-top: 30px; padding-bottom: 50px; width: 60%; margin: 0 auto">
+    {% if comments.paginator.num_pages >= 2 %}
+        {%  if comments.has_previous %}
+            <a class="btn btn-outline-info" href="?page={{ comments.previous_page_number }}">&#8592; Older Comments</a>
+        {% endif %}
+
+
+        {% for num in comments.paginator.page_range %}
+            {% if comments.number == num %}
+                <a class="btn btn-info" href="?page={{ num }}">{{ num }}</a>
+            {%  elif num > comments.number|add:'-3' and num < comments.number|add:'+3' %}
+                <a class="btn btn-outline-info" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+
+        {%  if comments.has_next %}
+            <a class="btn btn-outline-info" href="?page={{ comments.next_page_number }}">Newer Comments &#8594;</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+
+<!-- Comment form section -->
 <div class="card-body">
     {% if user.is_authenticated %}
     <h3>Leave a comment</h3>

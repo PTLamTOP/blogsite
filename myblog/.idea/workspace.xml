@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e956fffe-7a8b-45c1-9a3a-c1697e2c62b5" name="Default Changelist" comment="" />
+    <list default="true" id="e956fffe-7a8b-45c1-9a3a-c1697e2c62b5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/blog_project.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/blog/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/blog/css/clean-blog.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/blog/css/font-awesome.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/blog/css/main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/blog/media/background-image.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/about.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/article_confirm_delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/article_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/article_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/article_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myblog/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/myblog/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/templates/users/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/templates/users/logout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/templates/users/profile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/templates/users/register.html" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +40,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1VSxwuaDayTK3GkhBzuDEPbKxOx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -27,8 +53,9 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Python/Django/Youtube/django_project (JustDjango with comments)" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -86,6 +113,8 @@
       <workItem from="1577260541106" duration="16018000" />
       <workItem from="1577292233741" duration="2502000" />
       <workItem from="1577296704401" duration="1618000" />
+      <workItem from="1578065149700" duration="1301000" />
+      <workItem from="1578080452516" duration="1500000" />
     </task>
     <servers />
   </component>
@@ -93,13 +122,13 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1013" y="191" key="FileChooserDialogImpl" timestamp="1577298322305">
+    <state x="980" y="190" key="FileChooserDialogImpl" timestamp="1578066448541">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1013" y="191" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1577298322305" />
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1577292235492">
+    <state x="980" y="190" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1578066448541" />
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1578065150669">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577292235492" />
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578065150669" />
   </component>
 </project>

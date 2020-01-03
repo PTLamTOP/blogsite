@@ -19,7 +19,7 @@
                        {{ article.title }}
                     </h2>
                     <h3 class="post-subtitle">
-                        {{ article.intro }}
+                        {{ article.content | truncatewords:8| linebreaks }}
                     </h3>
                 </a>
                 <p class="post-meta">Posted by <a href="{% url 'profile' article.author.username %}">
@@ -33,7 +33,8 @@
 
             <div style="position: absolute; width: 100%">
                 {%  if page_obj.has_previous %}
-                    <a class="btn btn-outline-info" href="?page={{ page_obj.previous_page_number }}">&#8592; Older Articles</a>
+                    <a class="btn btn-outline-info" href="?page={{ page_obj.previous_page_number }}">&#8592;
+                        Older Articles</a>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
@@ -45,7 +46,8 @@
                 {% endfor %}
 
                 {%  if page_obj.has_next %}
-                    <a class="btn btn-outline-info" href="?page={{ page_obj.next_page_number }}">Newer Articles &#8594;</a>
+                    <a class="btn btn-outline-info" href="?page={{ page_obj.next_page_number }}">
+                        Newer Articles &#8594;</a>
                 {% endif %}
             </div>
 

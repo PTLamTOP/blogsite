@@ -3,7 +3,7 @@ from .models import Article, Comment
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import CommentForm
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, PageNotAnInteger
 
 
 """
@@ -13,6 +13,8 @@ class ArticleListView(ListView):
     model = Article
     ordering = ['-date_posted']
     paginate_by = 5
+    template_name = 'blog/article/article_list.html'
+
 
 
 """
@@ -23,6 +25,7 @@ Additional class parent 'LoginRequiredMixin' gives access to create a new articl
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'intro', 'content']
+    template_name = 'blog/article/article_form.html'
 
     def form_valid(self, form):
         # set a current logged in user as an author of a new article
@@ -40,6 +43,7 @@ if logged in user is author of article.
 class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
     fields = ['title', 'intro', 'content']
+    template_name = 'blog/article/article_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -63,6 +67,7 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Article
     # redirect to home page if a article was deleted successfully
     success_url = '/'
+    template_name = 'blog/article/article_confirm_delete.html'
 
     def test_func(self):
         article = self.get_object()
@@ -72,24 +77,29 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 def about(request, pk=None):
-    return render(request, 'blog/about.html', {'pk': pk})
+    return render(request, 'blog/article/about.html', {'pk': pk})
 
 
 """
 The custom class DetailView is responsible for showing data of a article.
 """
 def article_detail(request, pk=None):
-    template_name = 'blog/article_detail.html'
+    template_name = 'blog/article/article_detail.html'
     # get article and user object according to request
     article = get_object_or_404(Article, pk=pk)
     user = request.user
     # get all comments which: 1) are active, 2) is Parent (because field parent is null, no foreignkey to parent)
-    comments = article.comments.filter(active=True)
+    comments_list = article.comments.filter(active=True)
     # for new comment object
     new_comment = None
-    # # comment's pagination
-    # paginator = Paginator(comments, 10)
-    # page = request.GET.get('page')
+
+    # comment's pagination
+    paginator = Paginator(comments_list, 5)
+    page = request.GET.get('page')
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
 
 
 
@@ -113,11 +123,11 @@ def article_detail(request, pk=None):
 
             return redirect(request.get_full_path())
 
-    # if HTTP method is GET
     else:
         form = CommentForm()
 
     return render(request, template_name, {'article': article,
+                                           'comments_list': comments_list,
                                            'comments': comments,
                                            'form': form})
 
