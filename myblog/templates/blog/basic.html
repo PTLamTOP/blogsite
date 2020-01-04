@@ -57,14 +57,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li>
-                        <a href="{% url 'article-create' %}">New Article</a>
+                        <a href="{% url 'blog:article-create' %}">New Article</a>
                     </li>
                     {% endif %}
                     <li>
-                        <a href="{% url 'blog-home' %}">Home</a>
+                        <a href="{% url 'blog:blog-home' %}">Home</a>
                     </li>
                     <li>
-                        <a href="{% url 'blog-about' %}">About</a>
+                        <a href="{% url 'blog:blog-about' %}">About</a>
                     </li>
                 </ul>
             </div>
@@ -102,7 +102,7 @@
     </div>
 
 
-     <!-- Optional JavaScript -->
+    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

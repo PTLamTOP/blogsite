@@ -128,7 +128,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Redirect to 'article_list.html' after successful login
-LOGIN_REDIRECT_URL = 'blog-home'
+LOGIN_REDIRECT_URL = 'blog:blog-home'
 
 
 # Redirect user to page 'login.html' if user is not logged in,

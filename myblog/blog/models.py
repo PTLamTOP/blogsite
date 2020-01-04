@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
-    intro = models.CharField(max_length=500, null=True)
+    slug = models.SlugField(max_length=250, unique_for_date='date_posted', null=True)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles')
@@ -16,7 +16,7 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         # showing Django the correct URL pattern to an article according to our site structure
-        return reverse('article-detail', kwargs={'pk': self.pk})
+        return reverse('blog:article-detail', kwargs={'slug': self.slug})
 
 
 class Comment(models.Model):

@@ -1,0 +1,21 @@
+<div style="padding-top: 30px; padding-bottom: 50px; width: 60%; margin: 0 auto">
+    {% if page.paginator.num_pages >= 2 %}
+        {%  if page.has_previous %}
+            <a class="btn btn-outline-info" href="?page={{ page.previous_page_number }}">&#8592;
+                Older Articles</a>
+        {% endif %}
+
+        {% for num in page.paginator.page_range %}
+            {% if page.number == num %}
+                <a class="btn btn-info" href="?page={{ num }}">{{ num }}</a>
+            {%  elif num > page.number|add:'-3' and num < page.number|add:'+3' %}
+                <a class="btn btn-outline-info" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {%  if page.has_next %}
+            <a class="btn btn-outline-info" href="?page={{ page.next_page_number }}">
+                Newer Articles &#8594;</a>
+        {% endif %}
+    {% endif %}
+</div>

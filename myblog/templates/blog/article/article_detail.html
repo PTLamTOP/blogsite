@@ -15,8 +15,8 @@
 {% block content %}
 {% if article.author == user %}
     <div>
-        <a class="btn btn-secondary" href="{% url 'article-update' article.id %}">Update</a>
-        <a class="btn btn-danger" href="{% url 'article-delete' article.id %}">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'blog:article-update' article.id %}">Update</a>
+        <a class="btn btn-danger" href="{% url 'blog:article-delete' article.id %}">Delete</a>
     </div>
 {% endif %}
 
@@ -61,27 +61,7 @@
 
 
 <!-- Pager -->
-<div style="padding-top: 30px; padding-bottom: 50px; width: 60%; margin: 0 auto">
-    {% if comments.paginator.num_pages >= 2 %}
-        {%  if comments.has_previous %}
-            <a class="btn btn-outline-info" href="?page={{ comments.previous_page_number }}">&#8592; Older Comments</a>
-        {% endif %}
-
-
-        {% for num in comments.paginator.page_range %}
-            {% if comments.number == num %}
-                <a class="btn btn-info" href="?page={{ num }}">{{ num }}</a>
-            {%  elif num > comments.number|add:'-3' and num < comments.number|add:'+3' %}
-                <a class="btn btn-outline-info" href="?page={{ num }}">{{ num }}</a>
-            {% endif %}
-        {% endfor %}
-
-
-        {%  if comments.has_next %}
-            <a class="btn btn-outline-info" href="?page={{ comments.next_page_number }}">Newer Comments &#8594;</a>
-        {% endif %}
-    {% endif %}
-</div>
+{% include "blog/pagination.html" with page=comments %}
 
 
 <!-- Comment form section -->

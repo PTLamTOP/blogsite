@@ -24,7 +24,7 @@ Additional class parent 'LoginRequiredMixin' gives access to create a new articl
 """
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
-    fields = ['title', 'intro', 'content']
+    fields = ['title', 'slug', 'content']
     template_name = 'blog/article/article_form.html'
 
     def form_valid(self, form):
@@ -83,10 +83,10 @@ def about(request, pk=None):
 """
 The custom class DetailView is responsible for showing data of a article.
 """
-def article_detail(request, pk=None):
+def article_detail(request, slug=''):
     template_name = 'blog/article/article_detail.html'
     # get article and user object according to request
-    article = get_object_or_404(Article, pk=pk)
+    article = get_object_or_404(Article, slug=slug)
     user = request.user
     # get all comments which: 1) are active, 2) is Parent (because field parent is null, no foreignkey to parent)
     comments_list = article.comments.filter(active=True)
