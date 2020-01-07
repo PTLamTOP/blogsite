@@ -16,7 +16,7 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         # showing Django the correct URL pattern to an article according to our site structure
-        return reverse('blog:article-detail', kwargs={'slug': self.slug})
+        return reverse('blog:article-detail', kwargs={'id': self.id, 'slug': self.slug})
 
 
 class Comment(models.Model):

@@ -15,8 +15,8 @@
 {% block content %}
 {% if article.author == user %}
     <div>
-        <a class="btn btn-secondary" href="{% url 'blog:article-update' article.slug %}">Update</a>
-        <a class="btn btn-danger" href="{% url 'blog:article-delete' article.slug %}">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'blog:article-update' article.id article.slug %}">Update</a>
+        <a class="btn btn-danger" href="{% url 'blog:article-delete' article.id article.slug %}">Delete</a>
     </div>
 {% endif %}
 
