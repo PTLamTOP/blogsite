@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article, Comment
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import CommentForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -14,8 +14,7 @@ class ArticleListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 5
     template_name = 'blog/article/article_list.html'
-
-
+    extra_context = {'title': 'Home'}
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
@@ -27,6 +26,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'slug', 'content']
     template_name = 'blog/article/article_form.html'
+    extra_context = {'title': 'New Article'}
 
     def form_valid(self, form):
         # set a current logged in user as an author of a new article
@@ -45,6 +45,7 @@ class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
     fields = ['title', 'slug', 'content']
     template_name = 'blog/article/article_form.html'
+    extra_context = {'title': 'Update Article'}
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -69,6 +70,7 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     # redirect to home page if a article was deleted successfully
     success_url = '/'
     template_name = 'blog/article/article_confirm_delete.html'
+    extra_context = {'title': 'Delete Article'}
 
     def test_func(self):
         article = self.get_object()
@@ -78,12 +80,12 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 def about(request):
-    return render(request, 'blog/article/about.html')
+    return render(request, 'blog/article/about.html', {'title': 'About'})
 
 
 def article_detail(request,  id=None, slug=''):
     """
-    The custom class DetailView is responsible for showing data of a article.
+    The view is responsible for showing data of a article.
     """
     template_name = 'blog/article/article_detail.html'
     # get article and user object according to request

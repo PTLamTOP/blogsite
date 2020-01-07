@@ -10,10 +10,16 @@ from django.urls import reverse
 
 
 class UserProfile(LoginRequiredMixin, DetailView):
+    """
+    The custom class DetailView is responsible for displaying data(username, email, number of articles) of the users.
+
+    Additional class parent 'LoginRequiredMixin' gives access profile page if user is logged in .
+    """
     model = Profile
     template_name = 'users/profile.html'
-    login_url = 'users/login.html'
+    login_url = 'users:login'
     context_object_name = 'profile'
+    extra_context = {'title': 'Profile'}
 
     def get_object(self):
         profile = get_object_or_404(User, username=self.kwargs['username'])
@@ -25,13 +31,14 @@ class Registration(FormView):
     template_name = 'users/register.html'
     http_method_names = ['get', 'post']
     form_class = UserRegisterForm
+    extra_context = {'title': 'Registration'}
 
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('login')  # redirect to /login/ page
+        return reverse('users:login')  # redirect to /login/ page
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()

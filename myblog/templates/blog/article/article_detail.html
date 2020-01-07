@@ -8,7 +8,7 @@
 <!-- Article's data -->
 <h1>{{ article.title }}</h1>
 <hr class="small">
-<span class="subheading">By <a style="color: antiquewhite" href="{% url 'profile' article.author.username %}">
+<span class="subheading">By <a style="color: antiquewhite" href="{% url 'users:profile' article.author.username %}">
     {{ article.author }}</a> on {{ article.date_posted|date:"F d, Y" }}</span>
 {% endblock header %}
 
@@ -31,7 +31,7 @@
 
     <div class="comments" style="padding-left: {% multiply comment.level 100 %}px;">
         <span class=" text-muted font-weight-normal">
-            <a href="{% url 'profile' article.author.username %}">{{ comment.author.username }}</a>,
+            <a href="{% url 'users:profile' article.author.username %}">{{ comment.author.username }}</a>,
             {{ comment.created_on }}
         </span>
         <span> {{ comment.body|linebreaks }} </span>
