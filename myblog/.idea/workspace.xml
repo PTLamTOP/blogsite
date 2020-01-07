@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e956fffe-7a8b-45c1-9a3a-c1697e2c62b5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/blog/head.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/blog/js.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/blog/navigation.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myblog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/myblog/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/article/article_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/article/article_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/article/article_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/article/article_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/basic.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/basic.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/logout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/logout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +101,7 @@
       <workItem from="1578084324274" duration="1959000" />
       <workItem from="1578122764309" duration="1454000" />
       <workItem from="1578389684761" duration="9679000" />
+      <workItem from="1578401915006" duration="337000" />
     </task>
     <servers />
   </component>
@@ -134,10 +121,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1578390190686" />
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1578389685138">
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1578401914899">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578389685138" />
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578401914899" />
     <state x="285" y="200" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1578123093390">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
