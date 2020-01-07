@@ -42,7 +42,7 @@ if logged in user is author of article.
 """
 class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
-    fields = ['title', 'intro', 'content']
+    fields = ['title', 'slug', 'content']
     template_name = 'blog/article/article_form.html'
 
     def form_valid(self, form):
