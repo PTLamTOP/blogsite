@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Profile
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+# NOT NEEDED NOW. PLEASE IGNORE!
+# from .models import Profile
 
 class UserProfile(LoginRequiredMixin, DetailView):
     """
@@ -15,7 +15,7 @@ class UserProfile(LoginRequiredMixin, DetailView):
 
     Additional class parent 'LoginRequiredMixin' gives access profile page if user is logged in .
     """
-    model = Profile
+    model = User
     template_name = 'users/profile.html'
     login_url = 'users:login'
     context_object_name = 'profile'
@@ -23,7 +23,6 @@ class UserProfile(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         profile = get_object_or_404(User, username=self.kwargs['username'])
-        print(profile)
         return profile
 
 
@@ -33,7 +32,9 @@ class Registration(FormView):
     form_class = UserRegisterForm
     extra_context = {'title': 'Registration'}
 
-    def form_valid(self, form):
+    def form_valid(self, form, request):
+        username = form.cleaned_data.get('username')
+        messages.success(request, f'Account created for {username}')
         form.save()
         return super().form_valid(form)
 
@@ -41,11 +42,13 @@ class Registration(FormView):
         return reverse('users:login')  # redirect to /login/ page
 
     def post(self, request, *args, **kwargs):
+        """
+        Should override this method to add to form_valid object request. We will use request for messages.success.
+        May be it is not good decision :)
+        """
         form = self.get_form()
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}')
-            return self.form_valid(form)
+            return self.form_valid(form, request)
         else:
             return self.form_invalid(form)
 

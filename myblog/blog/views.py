@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article, Comment
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import CommentForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
 
 class ArticleListView(ListView):
@@ -79,8 +80,9 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-def about(request):
-    return render(request, 'blog/article/about.html', {'title': 'About'})
+class AboutView(TemplateView):
+    template_name = 'blog/article/about.html'
+    extra_context = {'title': 'About'}
 
 
 def article_detail(request,  id=None, slug=''):
@@ -102,7 +104,7 @@ def article_detail(request,  id=None, slug=''):
     except PageNotAnInteger:
         # If page is not an integer deliver the first page
         comments = paginator.page(1)
-    except EmptyPage:
+    except (ObjectDoesNotExist, MultipleObjectsReturned):
         # If page is out of range deliver last page of results
         comments = paginator.page(paginator.num_pages)
 
@@ -118,12 +120,11 @@ def article_detail(request,  id=None, slug=''):
                 reply_comment.level = parent_obj.level + 1
                 reply_comment.parent = parent_obj
                 reply_comment.save()
-            except:
+            except (Does):
                 new_comment = form.save(commit=False)
                 new_comment.article = article
                 new_comment.author = user
                 new_comment.save()
-
             return redirect(request.get_full_path())
 
     else:
