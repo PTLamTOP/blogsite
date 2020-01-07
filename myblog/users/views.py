@@ -1,38 +1,103 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from .forms import UserRegisterForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.generic import DetailView, FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Profile
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
+class UserProfile(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = 'users/profile.html'
+    login_url = 'users/login.html'
+    context_object_name = 'profile'
 
-"""
-View 'register' is responsible for:
- 1) HTTP GET: getting access to register page;
- 2) HTTP POST: creating new user in table User in DB according to data from a custom registration form.
-"""
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(data=request.POST)
+    def get_object(self):
+        profile = get_object_or_404(User, username=self.kwargs['username'])
+        print(profile)
+        return profile
+
+
+class Registration(FormView):
+    template_name = 'users/register.html'
+    http_method_names = ['get', 'post']
+    form_class = UserRegisterForm
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('login')  # redirect to /login/ page
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
         if form.is_valid():
-            form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}')
-            return redirect('login')
-    else:
-        form = UserRegisterForm()
-
-    return render(request, 'users/register.html', {'form': form})
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
-"""
-View 'profile' is reposible for user's page.
-Decorator @login_required checks if user is logged in before giving access to a profile.
-"""
-@login_required
-def profile(request, username=None):
-    profile = get_object_or_404(User, username=username)
-    return render(request, 'users/profile.html', {'profile': profile})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
