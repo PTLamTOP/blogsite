@@ -42,7 +42,7 @@ if logged in user is author of article.
 """
 class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
-    fields = ['title', 'intro', 'content']
+    fields = ['title', 'slug', 'content']
     template_name = 'blog/article/article_form.html'
 
     def form_valid(self, form):
@@ -99,12 +99,14 @@ def article_detail(request, slug=''):
     try:
         comments = paginator.page(page)
     except PageNotAnInteger:
+        # If page is not an integer deliver the first page
         comments = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        comments = paginator.page(paginator.num_pages)
 
-
-
-    # If HTTP method is POST (post new comment/reply)
     if request.method == 'POST':
+        # If HTTP method is POST (post new comment/reply)
         form = CommentForm(data=request.POST)
         if form.is_valid():
             # check if we have parent_id data from request. If yes - it is a reply, not- it is a new comment.

@@ -15,7 +15,7 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-secondary" href="{% url 'article-detail' object.id %}">Cancel</a>
+                <a class="btn btn-secondary" href="{% url 'blog:article-detail' object.slug %}">Cancel</a>
             </div>
         </form>
     </div>
