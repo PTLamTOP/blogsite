@@ -104,7 +104,7 @@ def article_detail(request,  id=None, slug=''):
     except PageNotAnInteger:
         # If page is not an integer deliver the first page
         comments = paginator.page(1)
-    except (ObjectDoesNotExist, MultipleObjectsReturned):
+    except EmptyPage:
         # If page is out of range deliver last page of results
         comments = paginator.page(paginator.num_pages)
 
@@ -120,7 +120,7 @@ def article_detail(request,  id=None, slug=''):
                 reply_comment.level = parent_obj.level + 1
                 reply_comment.parent = parent_obj
                 reply_comment.save()
-            except (Does):
+            except (ObjectDoesNotExist, MultipleObjectsReturned):
                 new_comment = form.save(commit=False)
                 new_comment.article = article
                 new_comment.author = user
