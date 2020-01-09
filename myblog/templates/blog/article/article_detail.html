@@ -27,6 +27,7 @@
 
 <!-- Comments -->
 <h2>{{ comments_list.count }} comments</h2>
+    {{ comments }}
 {% for comment in comments %}
 
     <div class="comments" style="padding-left: {% multiply comment.level 100 %}px;">

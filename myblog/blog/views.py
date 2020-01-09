@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article, Comment
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import CommentForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -83,6 +83,27 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class AboutView(TemplateView):
     template_name = 'blog/article/about.html'
     extra_context = {'title': 'About'}
+
+
+# class ArticleDetail(DetailView, FormView):
+#     model = Article
+#     template_name = 'blog/article/article_detail.html'
+#     http_method_names = ['get', 'post']
+#     context_object_name = 'article'
+#     form_class = CommentForm
+#
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         context = self.get_context_data(object=self.object)
+#
+#         article = dict(context)['object']
+#         self.comments = article.comments.filter(active=True)
+#
+#
+#         return self.render_to_response(context)
+#
+#     comments = None
+#     extra_context = {'title': 'Article', 'comments': comments}
 
 
 def article_detail(request,  id=None, slug=''):
