@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import ArticleListView, article_detail, \
-    ArticleCreateView, ArticleUpdateView, ArticleDeleteView, AboutView
+    ArticleCreateView, ArticleUpdateView, ArticleDeleteView, AboutView, ArticleDetail
 
 
 app_name = 'blog'

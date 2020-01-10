@@ -16,6 +16,7 @@ class ArticleListView(ListView):
     paginate_by = 5
     template_name = 'blog/article/article_list.html'
     extra_context = {'title': 'Home'}
+    context_object_name = 'articles'
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
@@ -85,27 +86,6 @@ class AboutView(TemplateView):
     extra_context = {'title': 'About'}
 
 
-# class ArticleDetail(DetailView, FormView):
-#     model = Article
-#     template_name = 'blog/article/article_detail.html'
-#     http_method_names = ['get', 'post']
-#     context_object_name = 'article'
-#     form_class = CommentForm
-#
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         context = self.get_context_data(object=self.object)
-#
-#         article = dict(context)['object']
-#         self.comments = article.comments.filter(active=True)
-#
-#
-#         return self.render_to_response(context)
-#
-#     comments = None
-#     extra_context = {'title': 'Article', 'comments': comments}
-
-
 def article_detail(request,  id=None, slug=''):
     """
     The view is responsible for showing data of a article.
@@ -141,7 +121,7 @@ def article_detail(request,  id=None, slug=''):
                 reply_comment.level = parent_obj.level + 1
                 reply_comment.parent = parent_obj
                 reply_comment.save()
-            except (ObjectDoesNotExist, MultipleObjectsReturned):
+            except (ObjectDoesNotExist, MultipleObjectsReturned, TypeError):
                 new_comment = form.save(commit=False)
                 new_comment.article = article
                 new_comment.author = user
@@ -158,7 +138,49 @@ def article_detail(request,  id=None, slug=''):
 
 
 
+# Class based Article Detail View. I am testing it.
+class ArticleDetail(ListView, FormView):
+    """
+        The custom class ListView is responsible for showing comments and article detail in one page.
+    """
+    model = Comment
+    ordering = ['-created_on']
+    paginate_by = 5
+    template_name = 'blog/article/article_detail.html'
+    extra_context = {'title': 'Article Detail'}
+    context_object_name = 'comments'
+    form_class = CommentForm
 
+    def __init__(self, **kwargs):
+        self.article = None
+        self.comment_parent = None
+        super().__init__(**kwargs)
 
+    def get(self, request, *args, **kwargs):
+        self.article = get_object_or_404(Article, id=kwargs['id'], slug=kwargs['slug'])
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['article'] = self.article
+        return context
+
+    def post(self, request, *args, **kwargs):
+        try:
+            parent_id = int(request.POST.get('parent_id'))
+            self.comment_parent = Comment.objects.get(id=parent_id)
+        except TypeError:
+            self.comment_parent = None
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # set a current logged in user as an author of a new article
+        form.instance.author = self.request.user
+        form.instance.article = self.article
+        if self.comment_parent:
+            form.instance.parent = self.comment_parent
+            form.instance.level = self.comment_parent.level + 1
+        form.save()
+        return redirect(self.article.get_absolute_url())
 
 
