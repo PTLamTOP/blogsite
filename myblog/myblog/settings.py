@@ -136,4 +136,4 @@ LOGIN_REDIRECT_URL = 'blog:blog-home'
 
 # Redirect user to page 'login.html' if user is not logged in,
 # but try to get access to page'profile.html'.
-LOGIN_URL = 'login'
+LOGIN_URL = 'users:login'
