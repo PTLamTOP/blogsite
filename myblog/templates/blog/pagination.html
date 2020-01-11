@@ -2,7 +2,7 @@
     {% if page.paginator.num_pages >= 2 %}
         {%  if page.has_previous %}
             <a class="btn btn-outline-info" href="?page={{ page.previous_page_number }}">&#8592;
-                Older Articles</a>
+                Older {{ paginator_name }}</a>
         {% endif %}
 
         {% for num in page.paginator.page_range %}
@@ -15,7 +15,7 @@
 
         {%  if page.has_next %}
             <a class="btn btn-outline-info" href="?page={{ page.next_page_number }}">
-                Newer Articles &#8594;</a>
+                Newer {{ paginator_name }} &#8594;</a>
         {% endif %}
     {% endif %}
 </div>

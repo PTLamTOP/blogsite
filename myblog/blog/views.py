@@ -120,6 +120,9 @@ def article_detail(request,  id=None, slug=''):
                 reply_comment = form.save(commit=False)
                 reply_comment.level = parent_obj.level + 1
                 reply_comment.parent = parent_obj
+                # Changed
+                reply_comment.article = article
+                reply_comment.author = user
                 reply_comment.save()
             except (ObjectDoesNotExist, MultipleObjectsReturned, TypeError):
                 new_comment = form.save(commit=False)

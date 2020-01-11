@@ -29,8 +29,7 @@
         {% endfor %}
 
         <!-- Pager -->
-        {% include "blog/pagination.html" with page=page_obj %}
-
+        {% include "blog/pagination.html" with page=page_obj paginator_name='Articles' %}
     </div>
 </div>
 {% endblock content %}
