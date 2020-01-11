@@ -120,7 +120,7 @@ def article_detail(request,  id=None, slug=''):
                 reply_comment = form.save(commit=False)
                 reply_comment.level = parent_obj.level + 1
                 reply_comment.parent = parent_obj
-                # Changed
+                # Added
                 reply_comment.article = article
                 reply_comment.author = user
                 reply_comment.save()
@@ -141,7 +141,7 @@ def article_detail(request,  id=None, slug=''):
 
 
 
-# Class based Article Detail View. I am testing it.
+# Class based Article Detail View. I am testing it. Please ignore it!
 class ArticleDetail(ListView, FormView):
     """
         The custom class ListView is responsible for showing comments and article detail in one page.
@@ -162,6 +162,11 @@ class ArticleDetail(ListView, FormView):
     def get(self, request, *args, **kwargs):
         self.article = get_object_or_404(Article, id=kwargs['id'], slug=kwargs['slug'])
         return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset.filter(body='article')
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
