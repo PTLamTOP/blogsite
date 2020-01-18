@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Article(models.Model):
@@ -15,22 +16,19 @@ class Article(models.Model):
         return f'{self.title}'
 
     def get_absolute_url(self):
-        # showing Django the correct URL pattern to an article according to our site structure
         return reverse('blog:article-detail', kwargs={'id': self.id, 'slug': self.slug})
 
 
-class Comment(models.Model):
+class Comment(MPTTModel):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
     created_on = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    # self = parent's comment object
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
-    level = models.IntegerField(default=0)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     class Meta:
-        ordering = ['created_on']
+        ordering = ['-created_on']
 
     def __str__(self):
         return f'Comment {self.body} by {self.author.username}'

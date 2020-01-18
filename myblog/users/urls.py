@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from django.contrib.auth import views
 from .views import UserProfile, Registration
 
@@ -12,5 +12,5 @@ urlpatterns = [
                                            extra_context={'title': 'Login'}), name='login'),
     path('logout/', views.LogoutView.as_view(template_name='users/logout.html',
                                              extra_context={'title': 'Logout'}), name='logout'),
-    path('profile/<str:username>', UserProfile.as_view(), name='profile')
+    path('profile/<int:pk>/<slug:username>/', UserProfile.as_view(), name='profile')
 ]

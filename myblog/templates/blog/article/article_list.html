@@ -22,7 +22,7 @@
                         {{ article.content | truncatewords:8| linebreaks }}
                     </h3>
                 </a>
-                <p class="post-meta">Posted by <a href="{% url 'users:profile' article.author.username %}">
+                <p class="post-meta">Posted by <a href="{% url 'users:profile' article.author.id article.author.username %}">
                     {{ article.author }}</a> on {{ article.date_posted }}</p>
             </div>
         <hr>

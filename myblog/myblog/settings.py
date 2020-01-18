@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mptt',
 ]
 
 
@@ -82,6 +84,18 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'blog',
+#         'USER': 'PTLam',
+#         'PASSWORD': 'lamakira2019',
+#         'HOST': 'localhost',
+#         'PORT': '5433',
+#     }
+# }
+
 
 
 # Password validation
@@ -132,8 +146,3 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Redirect to 'article_list.html' after successful login
 LOGIN_REDIRECT_URL = 'blog:blog-home'
-
-
-# Redirect user to page 'login.html' if user is not logged in,
-# but try to get access to page'profile.html'.
-LOGIN_URL = 'users:login'

@@ -8,7 +8,7 @@
 <!-- Article's data -->
 <h1>{{ article.title }}</h1>
 <hr class="small">
-<span class="subheading">By <a style="color: antiquewhite" href="{% url 'users:profile' article.author.username %}">
+<span class="subheading">By <a style="color: antiquewhite" href="{% url 'users:profile' article.author.id article.author.username %}">
     {{ article.author }}</a> on {{ article.date_posted|date:"F d, Y" }}</span>
 {% endblock header %}
 
@@ -27,27 +27,28 @@
 
 <!-- Comments -->
 <h2>{{ comments_list.count }} comments</h2>
-{% for comment in comments %}
+{% for node in comments %}
 
-    <div class="comments" style="padding-left: {% multiply comment.level 100 %}px;">
+    <div class="comments" style="padding-left:{% multiply node.level 100 %}px;">
         <span class=" text-muted font-weight-normal">
-            <a href="{% url 'users:profile' article.author.username %}">{{ comment.author.username }}</a>,
-            {{ comment.created_on }}
+            <a href="{% url 'users:profile' article.author.id article.author.username %}">{{ node.author.username }}</a>,
+            {{ node.created_on }}
         </span>
-        <span> {{ comment.body|linebreaks }} </span>
-        <label style="cursor: pointer" for="{{ comment.id }}">Reply</label>
+        <span> {{ node.body|linebreaks }} </span>
+
 
     <!-- Form of reply to comment -->
+        <label style="cursor: pointer" for="{{ comment.id }}">Reply</label>
         <div class="card-body">
             {% if user.is_authenticated %}
             <div class="content-section">
-                <form method="POST" style="width: 60%; margin: 0 auto">
+                <form action="{% url 'blog:comment-create' %}" method="POST" style="width: 60%; margin: 0 auto">
                     {% csrf_token %}
-                    {{ form|crispy }}
-                    {# setting parent comment id which will be sent in request #}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    {{ comment_form|crispy }}
+                    <input type="hidden" name="parent_id" value="{{ node.id }}">
+                    <input type="hidden" name="article_id" value="{{ article.id }}">
                     <div class="form-group">
-                        <button id="{{ comment.id }}" class="btn btn-primary" type="submit">Reply</button>
+                        <button id="{{ node.id }}" class="btn btn-primary" type="submit">Reply</button>
                     </div>
                 </form>
             </div>
@@ -61,7 +62,7 @@
 
 
 <!-- Pager -->
-{% include "blog/pagination.html" with page=comments paginator_name='Comments'%}
+{% include "blog/pagination.html" with page=page_obj paginator_name='Comments'%}
 
 
 <!-- Comment form section -->
@@ -69,11 +70,12 @@
     {% if user.is_authenticated %}
     <h3>Leave a comment</h3>
     <div class="content-section">
-        <form method="POST" style="width: 60%; margin: 0 auto">
+        <form action="{% url 'blog:comment-create' %}" method="POST" style="width: 60%; margin: 0 auto">
             {% csrf_token %}
             <fieldset class="form-group">
-                {{ form|crispy }}
+                {{ comment_form|crispy }}
             </fieldset>
+            <input type="hidden" name="article_id" value="{{ article.id }}">
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">Post</button>
             </div>
