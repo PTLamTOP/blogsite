@@ -19,7 +19,7 @@ class ArticleListView(ListView):
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
-    fields = ['title', 'slug', 'content']
+    fields = ['title', 'content']
     template_name = 'blog/article/article_form.html'
     extra_context = {'title': 'New Article'}
 
@@ -30,7 +30,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
 
 class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
-    fields = ['title', 'slug', 'content']
+    fields = ['title', 'content']
     template_name = 'blog/article/article_form.html'
     extra_context = {'title': 'Update Article'}
 
@@ -86,17 +86,15 @@ class ArticleDetail(ListView):
     paginate_by = 5
     template_name = 'blog/article/article_detail.html'
     extra_context = {'title': 'Article Detail'}
-
-    def __init__(self, **kwargs):
-        self.article = None
-        return super().__init__(**kwargs)
+    article_id = None
 
     def get(self, request, *args, **kwargs):
-        self.article = get_object_or_404(Article, id=kwargs['id'], slug=kwargs['slug'])
+        self.article_id = kwargs['id']
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, object_list=None, **kwargs):
+        article = get_object_or_404(Article, id=self.article_id)
         context = super().get_context_data(object_list=None, **kwargs)
-        context.update({'article': self.article,
+        context.update({'article': article,
                         'comment_form': CommentForm, })
         return context

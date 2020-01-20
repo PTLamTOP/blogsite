@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
+from django.utils.text import slugify
 
 
 class Article(models.Model):
@@ -14,6 +15,11 @@ class Article(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('blog:article-detail', kwargs={'id': self.id, 'slug': self.slug})

@@ -38,17 +38,17 @@
 
 
     <!-- Form of reply to comment -->
-        <label style="cursor: pointer" for="{{ comment.id }}">Reply</label>
+        <button type="button" data-target="#{{ node.id }}" class="label-primary">Reply</button>
         <div class="card-body">
             {% if user.is_authenticated %}
             <div class="content-section">
-                <form action="{% url 'blog:comment-create' %}" method="POST" style="width: 60%; margin: 0 auto">
+                <form id="{{ node.id }}" action="{% url 'blog:comment-create' %}" method="POST" style="width: 60%; margin: 0 auto; display: none">
                     {% csrf_token %}
                     {{ comment_form|crispy }}
                     <input type="hidden" name="parent_id" value="{{ node.id }}">
                     <input type="hidden" name="article_id" value="{{ article.id }}">
                     <div class="form-group">
-                        <button id="{{ node.id }}" class="btn btn-primary" type="submit">Reply</button>
+                        <button class="btn btn-primary" type="submit">Reply</button>
                     </div>
                 </form>
             </div>

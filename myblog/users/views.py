@@ -22,11 +22,11 @@ class Registration(CreateView):
     extra_context = {'title': 'Registration'}
 
     def get_success_url(self):
+        username = self.request.POST.get('username')
+        messages.success(self.request, f'Account created for {username}')
         return reverse('users:login')
 
     def post(self, request, *args, **kwargs):
-        username = request.POST.get('username')
-        messages.success(request, f'Account created for {username}')
         return super().post(request, *args, **kwargs)
 
 
